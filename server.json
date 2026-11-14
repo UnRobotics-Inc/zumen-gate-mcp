@@ -1,0 +1,30 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "com.zumen-gate/zumen-gate-mcp",
+  "title": "zumen-gate",
+  "description": "Read, search, render, edit and convert CAD drawings (JWW, DWG, DXF, SXF, PDF) via zumen-gate.",
+  "websiteUrl": "https://zumen-gate.com/developers",
+  "repository": {
+    "url": "https://github.com/monozukuri-ai/zumen-gate-mcp",
+    "source": "github"
+  },
+  "version": "0.1.0",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "identifier": "zumen-gate-mcp",
+      "version": "0.1.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "ZUMEN_GATE_API_KEY",
+          "description": "Your zumen-gate API key (free registration at https://zumen-gate.com/developers)",
+          "isRequired": true,
+          "isSecret": true
+        }
+      ]
+    }
+  ]
+}

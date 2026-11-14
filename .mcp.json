@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "zumen-gate": {
+      "command": "uvx",
+      "args": ["zumen-gate-mcp", "--root", "."],
+      "env": {
+        "ZUMEN_GATE_API_KEY": "${ZUMEN_GATE_API_KEY}"
+      }
+    }
+  }
+}

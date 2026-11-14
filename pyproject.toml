@@ -1,0 +1,61 @@
+[project]
+name = "zumen-gate-mcp"
+dynamic = ["version"]
+description = "MCP server and CLI for the zumen-gate drawing API: read, search, render, edit and convert JWW, DWG, DXF, SXF and PDF drawings from Claude and other MCP clients"
+keywords = ["mcp", "model-context-protocol", "cad", "jww", "jw_cad", "dwg", "dxf", "sxf", "claude"]
+readme = "README.md"
+authors = [{ name = "neka-nat" }]
+license = { text = "MIT" }
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Multimedia :: Graphics :: Graphics Conversion",
+    "Topic :: Scientific/Engineering",
+]
+dependencies = [
+    "mcp>=2.3,<3",
+    "httpx[http2]>=0.28,<1",
+]
+
+[project.urls]
+Homepage = "https://zumen-gate.com/developers"
+Repository = "https://github.com/monozukuri-ai/zumen-gate-mcp"
+Issues = "https://github.com/monozukuri-ai/zumen-gate-mcp/issues"
+
+[project.scripts]
+zumen-gate-mcp = "zumen_gate_mcp.server:main"
+zumen-gate = "zumen_gate_mcp.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8,<10",
+    "respx>=0.22,<1",
+    "ruff>=0.15",
+]
+
+[tool.hatch.version]
+path = "src/zumen_gate_mcp/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/zumen_gate_mcp"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src", "tests", "skills", "README.md", "README.ja.md", "LICENSE", "CHANGELOG.md"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "W"]
+# The formatter keeps code within the line length; long message strings stay whole
+ignore = ["E501"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

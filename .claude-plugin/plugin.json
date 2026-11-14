@@ -1,0 +1,10 @@
+{
+  "name": "zumen-gate",
+  "version": "0.1.0",
+  "description": "Read, search, render, edit and convert CAD drawings (Jw_cad JWW, DWG, DXF, SXF, PDF) with the zumen-gate API, plus a skill on how to work with drawings.",
+  "author": { "name": "neka-nat" },
+  "homepage": "https://zumen-gate.com/developers",
+  "repository": "https://github.com/monozukuri-ai/zumen-gate-mcp",
+  "license": "MIT",
+  "keywords": ["cad", "jww", "dwg", "dxf", "drawings", "mcp"]
+}

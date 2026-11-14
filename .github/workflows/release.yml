@@ -1,0 +1,57 @@
+name: release
+
+# A tag v<version> tests, builds and publishes zumen-gate-mcp to PyPI.
+# Run by hand (workflow_dispatch) it tests and builds and publishes nothing.
+#
+# Publishing uses PyPI trusted publishing: no token is stored in this repository. The project on
+# PyPI names this workflow as its publisher (repository zumen-gate-mcp, workflow release.yml,
+# environment pypi). After PyPI, publish server.json to the MCP registry with mcp-publisher.
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Test and build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.13"
+      - name: Check versions and tag
+        env:
+          RELEASE_TAG: ${{ github.event_name == 'push' && github.ref_name || '' }}
+        run: uv run --no-project python scripts/check_versions.py --tag "${RELEASE_TAG}"
+      - run: uv run --locked ruff check src tests
+      - run: uv run --locked pytest -q
+      - run: uv build --out-dir dist
+      - name: Check the built wheel
+        run: |
+          uv run --isolated --no-project --with dist/*.whl zumen-gate-mcp --version
+          uv run --isolated --no-project --with dist/*.whl zumen-gate --help
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  publish:
+    name: Publish to PyPI
+    needs: build
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1
