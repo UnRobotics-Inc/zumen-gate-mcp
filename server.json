@@ -5,7 +5,7 @@
   "description": "Read, search, render, edit and convert CAD drawings (JWW, DWG, DXF, SXF, PDF) via zumen-gate.",
   "websiteUrl": "https://zumen-gate.com/developers",
   "repository": {
-    "url": "https://github.com/monozukuri-ai/zumen-gate-mcp",
+    "url": "https://github.com/UnRobotics-Inc/zumen-gate-mcp",
     "source": "github"
   },
   "version": "0.1.0",
