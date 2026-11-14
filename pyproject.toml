@@ -21,8 +21,8 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://zumen-gate.com/developers"
-Repository = "https://github.com/monozukuri-ai/zumen-gate-mcp"
-Issues = "https://github.com/monozukuri-ai/zumen-gate-mcp/issues"
+Repository = "https://github.com/UnRobotics-Inc/zumen-gate-mcp"
+Issues = "https://github.com/UnRobotics-Inc/zumen-gate-mcp/issues"
 
 [project.scripts]
 zumen-gate-mcp = "zumen_gate_mcp.server:main"
