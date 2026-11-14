@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.1
+
+- The command line accepts `--root` and `--raw` after the command too
+  (`zumen-gate formats --raw`).
+- The package's repository and issue links point to the right place.
+
 ## 0.1.0
 
 First release.

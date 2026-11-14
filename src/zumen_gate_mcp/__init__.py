@@ -4,4 +4,4 @@ Reading and converting happen on the zumen-gate API (https://api.zumen-gate.com)
 happens locally on a working copy of the drawing in the intermediate representation (IR).
 """
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"

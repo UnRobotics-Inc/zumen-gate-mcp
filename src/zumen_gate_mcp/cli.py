@@ -59,21 +59,31 @@ def _json_arg(value: str | None, name: str) -> Any:
 
 
 def build_parser() -> argparse.ArgumentParser:
+    root_help = "the working folder (default: current folder)"
+    raw_help = "print the JSON on one line"
     parser = argparse.ArgumentParser(prog="zumen-gate", description=__doc__.splitlines()[0])
-    parser.add_argument("--root", default=None, help="the working folder (default: current folder)")
-    parser.add_argument("--raw", action="store_true", help="print the JSON on one line")
+    parser.add_argument("--root", default=None, help=root_help)
+    parser.add_argument("--raw", action="store_true", help=raw_help)
     parser.add_argument("--version", action="version", version=f"zumen-gate {__version__}")
+    # --root and --raw also work after the command (zumen-gate formats --raw). SUPPRESS keeps a
+    # subcommand from resetting a value given before the command.
+    common = argparse.ArgumentParser(add_help=False)
+    common.add_argument("--root", default=argparse.SUPPRESS, help=root_help)
+    common.add_argument("--raw", action="store_true", default=argparse.SUPPRESS, help=raw_help)
     sub = parser.add_subparsers(dest="command", required=True)
 
-    sub.add_parser("formats", help="list the formats (no key needed)")
+    def command(name: str, help_text: str) -> argparse.ArgumentParser:
+        return sub.add_parser(name, help=help_text, parents=[common])
 
-    p = sub.add_parser("inspect", help="summarize a drawing (1 call)")
+    command("formats", "list the formats (no key needed)")
+
+    p = command("inspect", "summarize a drawing (1 call)")
     p.add_argument("path")
     p.add_argument("--pages")
     p.add_argument("--sheet")
     p.add_argument("--original", action="store_true", help="send the file, not the working copy")
 
-    p = sub.add_parser("query", help="list matching entities (1 call)")
+    p = command("query", "list matching entities (1 call)")
     p.add_argument("path")
     p.add_argument("--layer", action="append")
     p.add_argument("--kind", action="append")
@@ -87,7 +97,7 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--cursor")
     p.add_argument("--original", action="store_true")
 
-    p = sub.add_parser("render", help="draw as PNG into the output folder (1 call)")
+    p = command("render", "draw as PNG into the output folder (1 call)")
     p.add_argument("path")
     p.add_argument("--bbox", nargs=4, type=float, metavar=("XMIN", "YMIN", "XMAX", "YMAX"))
     p.add_argument("--layers", nargs="+")
@@ -95,14 +105,14 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--width", type=int)
     p.add_argument("--original", action="store_true")
 
-    p = sub.add_parser("edit", help="edit the working copy locally")
+    p = command("edit", "edit the working copy locally")
     p.add_argument("path")
     p.add_argument("--ops", help="the operations as JSON, or a JSON file")
     p.add_argument("--create", help='start a blank drawing: JSON like {"format": "jww"}')
     p.add_argument("--undo", action="store_true")
     p.add_argument("--reset", action="store_true")
 
-    p = sub.add_parser("convert", help="convert drawings into the output folder")
+    p = command("convert", "convert drawings into the output folder")
     p.add_argument("paths", nargs="+")
     p.add_argument("--to", required=True)
     p.add_argument("--version", dest="target_version")
@@ -111,7 +121,7 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--out-dir")
     p.add_argument("--original", action="store_true")
 
-    sub.add_parser("account", help="calls left and this month's use")
+    command("account", "calls left and this month's use")
     return parser
 
 
